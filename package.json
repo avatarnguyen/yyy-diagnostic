@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "dependencies": {
     "actions-on-google": "^2.13.0",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dialogflow": "^1.2.0",
     "dialogflow-fulfillment": "^0.6.1",
     "express": "^4.17.1",
@@ -22,6 +24,6 @@
     "dev": "concurrently \"npm run backend\"  \"npm run start --prefix client\""
   },
   "keywords": [],
-  "author": "",
+  "author": "Anh Nguyen",
   "license": "ISC"
 }
