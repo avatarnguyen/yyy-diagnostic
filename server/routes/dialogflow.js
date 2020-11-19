@@ -3,7 +3,7 @@ import express from 'express';
 import dialogflow from 'dialogflow';
 import uuid from 'uuid';
 // const dialogflow = require('@google-cloud/dialogflow');
-import config from '../config/prod.js';
+import config from '../config/dev.js';
 // const config = require('../config/keys');
 
 const router = express.Router();
