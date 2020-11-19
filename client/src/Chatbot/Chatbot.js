@@ -6,6 +6,7 @@ import { saveMessage } from "../_actions/message_actions";
 import {
   Container,
   Row,
+  Col,
   Card,
   Button,
   FormControl,
@@ -175,7 +176,9 @@ function Chatbot() {
     <div>
       <Container fluid className="pt-3 bg-white">
         <Row className="justify-content-center">
-          <Card style={{ width: "60%", height: "80vh", backgroundColor: "#F8F8FF" }}>
+          <Col lg={6} md={8} sm={12}>
+
+          <Card style={{ width: "100%", height: "80vh", backgroundColor: "#F8F8FF" }}>
             <Card.Title>Diagnostic Chat</Card.Title>
             <div
               style={{ height: 644, width: "100%", overflow: "auto" }}
@@ -187,9 +190,7 @@ function Chatbot() {
               ></div>
             </div>
           </Card>
-        </Row>
-        <Row className="justify-content-center">
-          <InputGroup className="my-2" style={{ width: "60%" }}>
+          <InputGroup className="my-2" style={{ width: "100%" }}>
             <FormControl
               placeholder="message"
               aria-label="message"
@@ -205,6 +206,7 @@ function Chatbot() {
               </Button>
             </InputGroup.Append>
           </InputGroup>
+          </Col>
         </Row>
       </Container>
     </div>
