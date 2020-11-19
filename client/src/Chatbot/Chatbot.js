@@ -17,6 +17,7 @@ function Chatbot() {
   const messagesFromRedux = useSelector((state) => state.message.messages);
   var textInput = "";
   // const [textInput, setTextInput] = useState(" ");
+  // const textURL = '';
 
   let conversation = {
     who: "user",
