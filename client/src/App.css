@@ -15,7 +15,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +35,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App-chat {
+  height: 80vh;
+  width: 70vw;
+  color: black;
+  border: 3px solid green;
+  margin: auto;
 }
