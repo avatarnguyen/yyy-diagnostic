@@ -1,10 +1,7 @@
-
-// const express = require('express')
 import express from 'express';
 import cors from 'cors';
 // const path = require("path");
 import path from 'path';
-// const bodyParser = require("body-parser");
 import bodyParser from 'body-parser';
 import dialogflowRoutes from './server/routes/dialogflow.js';
 import mongoose from 'mongoose';
@@ -23,8 +20,6 @@ const app = express();
 // });
 
 
-
-// app.use('/api/dialogflow', require('./server/routes/dialogflow'));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
