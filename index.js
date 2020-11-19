@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 
-const CONNECTION_URL = process.env.CONNECTION_URL;
+// const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 8000;
 
 // mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
