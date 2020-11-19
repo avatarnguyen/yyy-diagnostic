@@ -27,7 +27,7 @@ app.use(cors());
 
 app.use('/api/dialogflow', dialogflowRoutes);
 
-// // Serve static assets if in production
+// Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
 
   // Set static folder
