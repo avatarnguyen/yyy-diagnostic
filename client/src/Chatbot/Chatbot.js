@@ -52,7 +52,7 @@ function Chatbot() {
     try {
       //I will send request to the textQuery ROUTE
       const response = await Axios.post(
-        "/api/dialogflow/eventQuery",
+        "https://yyy-diagnostic.herokuapp.com/api/dialogflow/eventQuery",
         eventQueryVariables
       );
       for (let content of response.data.fulfillmentMessages) {
@@ -96,7 +96,7 @@ function Chatbot() {
     };
     try {
       const response = await Axios.post(
-        "api/dialogflow/textQuery",
+        "https://yyy-diagnostic.herokuapp.com/api/dialogflow/textQuery",
         textQueryVariables
       );
       const content = response.data.fulfillmentMessages[0];
