@@ -19,22 +19,23 @@ function Chatbot() {
   const dispatch = useDispatch();
   const messagesFromRedux = useSelector((state) => state.message.messages);
   const [textInput, setTextInput] = useState(" ");
+  // const [loading, setLoading] = useState(false);
   const endRef = useRef();
 
-  const textURL =
-    process.env.NODE_ENV === "production"
-      ? "https://yyy-diagnostic.herokuapp.com/"
-      : "http://localhost:8000/";
-  // const textURL = "https://yyy-diagnostic.herokuapp.com/";
+  // const textURL =
+  //   process.env.REACT_ENV === "production"
+  //     ? "https://yyy-diagnostic.herokuapp.com/"
+  //     : "http://localhost:8000/";
+  const textURL = "https://yyy-diagnostic.herokuapp.com/";
 
   useEffect(() => {
-    // dispatch(saveMessage(conversation));
     eventQuery("welcome");
   }, []);
 
-  // const ref = React.createRef();
-  function handleScroll() {
-    endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  const handleScroll = () => {
+    if (endRef) {
+      endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
   };
 
   // Event Query Handle
@@ -54,7 +55,6 @@ function Chatbot() {
           who: "bot",
           content: content,
         };
-
         dispatch(saveMessage(conversation));
       }
     } catch (error) {
@@ -82,7 +82,6 @@ function Chatbot() {
       },
     };
     dispatch(saveMessage(conversation));
-    // console.log("text I sent", conversation);
 
     // Handle Message from Chatbot
     const textQueryVariables = {
@@ -98,7 +97,6 @@ function Chatbot() {
           who: "bot",
           content: content,
         };
-
         dispatch(saveMessage(conversation));
       }
     } catch (error) {
@@ -113,13 +111,8 @@ function Chatbot() {
       dispatch(saveMessage(conversation));
     }
   };
-
-  // const eventKeyPressHandler = (e) => {
-  //   eventQuery("welcomeToYYY");
-  // };
   const buttonPressHandler = () => {
     textQuery(textInput);
-    // this.text.value = "";
     setTextInput("");
   };
 
@@ -134,7 +127,7 @@ function Chatbot() {
   };
 
   const renderOneMessage = (message, i) => {
-    console.log("message: ", message);
+    // console.log("message: ", message);
     if (message.content && message.content.text && message.content.text.text) {
       const isBot = (message.who === "bot");
       handleScroll();
