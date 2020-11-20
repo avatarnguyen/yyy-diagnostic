@@ -1,8 +1,9 @@
 import Axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../_actions/message_actions";
-
+import pandaImg from "../assets/images/google-panda-circular-symbol.png";
+import yyyImg from "../assets/images/Logo_Yin-Young-&-You_Web.jpg";
 import {
   Container,
   Row,
@@ -11,37 +12,30 @@ import {
   Button,
   FormControl,
   InputGroup,
+  Image,
 } from "react-bootstrap";
 
 function Chatbot() {
   const dispatch = useDispatch();
   const messagesFromRedux = useSelector((state) => state.message.messages);
-  var textInput = "";
-  // const [textInput, setTextInput] = useState(" ");
-  // const textURL = '';
+  const [textInput, setTextInput] = useState(" ");
+  const endRef = useRef();
 
-  let conversation = {
-    who: "user",
-    content: {
-      text: {
-        text: "Hallo! Willkommen",
-      },
-    },
-  };
+  const textURL =
+    process.env.NODE_ENV === "production"
+      ? "https://yyy-diagnostic.herokuapp.com/"
+      : "http://localhost:8000/";
+  // const textURL = "https://yyy-diagnostic.herokuapp.com/";
 
   useEffect(() => {
-    dispatch(saveMessage(conversation));
-    // eventQuery("welcomeToYYY");
-  }, [dispatch]);
+    // dispatch(saveMessage(conversation));
+    eventQuery("welcome");
+  }, []);
 
   // const ref = React.createRef();
-  var element = document.getElementById("endMessage");
-
-  const handleScroll = () =>
-  element.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+  function handleScroll() {
+    endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
 
   // Event Query Handle
   const eventQuery = async (event) => {
@@ -52,7 +46,7 @@ function Chatbot() {
     try {
       //I will send request to the textQuery ROUTE
       const response = await Axios.post(
-        "https://yyy-diagnostic.herokuapp.com/api/dialogflow/eventQuery",
+        `${textURL}api/dialogflow/eventQuery`,
         eventQueryVariables
       );
       for (let content of response.data.fulfillmentMessages) {
@@ -96,17 +90,17 @@ function Chatbot() {
     };
     try {
       const response = await Axios.post(
-        "https://yyy-diagnostic.herokuapp.com/api/dialogflow/textQuery",
+        `${textURL}api/dialogflow/textQuery`,
         textQueryVariables
       );
-      const content = response.data.fulfillmentMessages[0];
+      for (let content of response.data.fulfillmentMessages) {
+        let conversation = {
+          who: "bot",
+          content: content,
+        };
 
-      conversation = {
-        who: "bot",
-        content: content,
-      };
-      dispatch(saveMessage(conversation));
-      // console.log(conversation)
+        dispatch(saveMessage(conversation));
+      }
     } catch (error) {
       conversation = {
         who: "bot",
@@ -125,9 +119,8 @@ function Chatbot() {
   // };
   const buttonPressHandler = () => {
     textQuery(textInput);
-  };
-  const handleInput = (e) => {
-    textInput = e.target.value;
+    // this.text.value = "";
+    setTextInput("");
   };
 
   const keyPressHandler = (e) => {
@@ -136,27 +129,47 @@ function Chatbot() {
         return alert("You need to type something first before hitting enter");
       }
       textQuery(e.target.value);
-      e.target.value = "";
+      setTextInput("");
     }
   };
 
   const renderOneMessage = (message, i) => {
     console.log("message: ", message);
-    handleScroll();
     if (message.content && message.content.text && message.content.text.text) {
+      const isBot = (message.who === "bot");
+      handleScroll();
       return (
-        <div className="py-0 px-2 my-2">
-          <Card
-            className={message.who === "bot" ? "mr-auto" : "ml-auto"}
-            bg={message.who === "bot" ? "primary" : "white"}
-            style={{ width: "60%", border: "none" }}
+        <div className="py-0 px-1 my-2">
+          <Row
+            className={`mx-0 ${
+              message.who === "bot"
+                ? "justify-content-start"
+                : "justify-content-end"
+            }`}
           >
-            <Card.Body
-              className={message.who === "bot" ? "text-light" : "text-dark"}
+            <Col
+              sm={{ span: 1, order: isBot ? "first" : "last" }}
+              className="align-items-center p-1 mx-2"
             >
-              {message.content.text.text}
-            </Card.Body>
-          </Card>
+              <Image
+                src={isBot ? yyyImg : pandaImg}
+                style={{ width: "3rem", height: "auto" }}
+                roundedCircle
+              />
+            </Col>
+            <Col sm={7} className="px-0 mx-0 align-items-center">
+              <Card
+                bg={isBot ? "primary" : "white"}
+                style={{ width: "100%", border: "none" }}
+              >
+                <Card.Body
+                  className={isBot ? "text-light" : "text-dark"}
+                >
+                  {message.content.text.text}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         </div>
       );
     }
@@ -171,41 +184,45 @@ function Chatbot() {
       return null;
     }
   };
-
+//  backgroundColor: "#F8F8FF",
   return (
     <div>
-      <Container fluid className="pt-3 bg-white">
+      <Container fluid className="pt-3">
         <Row className="justify-content-center">
-          <Col lg={6} md={8} sm={12}>
-
-          <Card style={{ width: "100%", height: "80vh", backgroundColor: "#F8F8FF" }}>
-            <Card.Title>Diagnostic Chat</Card.Title>
-            <div
-              style={{ height: 644, width: "100%", overflow: "auto" }}
+          <Col lg={8} md={10} sm={12}>
+            <Card
+              style={{
+                width: "100%",
+                height: "80vh",
+                backgroundColor: "#F8F8FF",
+              }}
             >
-              {renderMessage(messagesFromRedux)}
-              <div
-                style={{ clear: "both" }}
-                id="endMessage"
-              ></div>
-            </div>
-          </Card>
-          <InputGroup className="my-2" style={{ width: "100%" }}>
-            <FormControl
-              placeholder="message"
-              aria-label="message"
-              aria-describedby="messageToChatbot"
-              onKeyPress={keyPressHandler}
-              onChange={handleInput}
-              type="text"
-              style={{ height: "3rem" }}
-            />
-            <InputGroup.Append>
-              <Button variant="primary" onClick={buttonPressHandler}>
-                Send
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
+              <div style={{ height: 644, width: "100%", overflow: "auto" }}>
+                {renderMessage(messagesFromRedux)}
+                <div style={{ clear: "both" }} ref={endRef}></div>
+              </div>
+            </Card>
+            <InputGroup
+              className="my-2"
+              style={{ width: "100%" }}
+              key="chat_input"
+            >
+              <FormControl
+                placeholder="Hit Enter to submit answer"
+                aria-label="message"
+                aria-describedby="messageToChatbot"
+                value={textInput}
+                onKeyPress={keyPressHandler}
+                onChange={(e) => setTextInput(e.target.value)}
+                type="text"
+                style={{ height: "3rem" }}
+              />
+              <InputGroup.Append>
+                <Button variant="primary" onClick={buttonPressHandler}>
+                  Send
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </Col>
         </Row>
       </Container>

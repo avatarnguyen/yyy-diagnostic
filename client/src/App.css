@@ -44,3 +44,14 @@
   border: 3px solid green;
   margin: auto;
 }
+
+.App-handBtn {
+  margin-top: 10rem;
+  background-color: rgba(256, 256, 256, 0.53);
+  border-color: transparent;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+.App-handBtn:hover {
+  background-color: rgba(256, 256, 256, 0.80);
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
